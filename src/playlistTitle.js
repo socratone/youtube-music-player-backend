@@ -8,14 +8,14 @@ router.get('/', (req, res) => {
   let sql = `SELECT id, title FROM playlist`;
 
   new Promise((resolve, reject) => {
-    db.all(sql, [], (error, rows) => {
+    db.all(sql, [], (error, result) => {
       if (error) reject(error);
-      resolve(rows);
+      resolve(result);
     });
-  }).then(rows => {
-    console.log('rows:', rows);
+  }).then(result => {
+    console.log('result:', result);
     db.close();
-    res.status(200).send(rows);
+    res.status(200).send(result);
   }).catch(error => {
     res.status(500).send(error);
   });
