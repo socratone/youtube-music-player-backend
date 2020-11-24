@@ -1,0 +1,11 @@
+CREATE TABLE playlist (
+  id         INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  title      TEXT NOT NULL
+);
+
+CREATE TABLE video (
+  id         INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  videoId    TEXT NOT NULL,
+  title      TEXT NOT NULL,
+  playlistId INTEGER NOT NULL
+);
