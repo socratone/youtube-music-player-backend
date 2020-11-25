@@ -14,11 +14,11 @@ router.post('/', (req, res) => {
       if (error) reject(error);
       resolve(this.lastID);
     });
-  }).then(datas => {
+  }).then(lastID => {
     db.close();
-    res.sendStatus(200).send(datas);
+    res.status(200).send(lastID.toString());
   }).catch(error => {
-    res.sendStatus(500).send(error);
+    res.status(500).sendStatus(error);
   });
 });
 
