@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 
-const playlist = require('./getPlaylistVideo');
+const playlist = require('./getPlaylist');
 
 app.use(cors());
  
