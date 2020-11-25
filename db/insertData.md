@@ -12,7 +12,7 @@ INSERT INTO video (videoId, title)
 VALUES ('TgOu00Mf3kI', '아이유 - 에잇');
 
 INSERT INTO video (videoId, title)
-VALUES ('5q5mZbe3V8', 'BTS (방탄소년단) &#39;Life Goes On&#39; Official MV');
+VALUES ('-5q5mZbe3V8', 'BTS (방탄소년단) &#39;Life Goes On&#39; Official MV');
 
 
 INSERT INTO playlist_video (pId, vId)
