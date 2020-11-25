@@ -6,6 +6,11 @@ CREATE TABLE playlist (
 CREATE TABLE video (
   id         INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   videoId    TEXT NOT NULL,
-  title      TEXT NOT NULL,
-  playlistId INTEGER NOT NULL
+  title      TEXT NOT NULL
+);
+
+CREATE TABLE playlist_video (
+  id         INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  pId        INTEGER NOT NULL,
+  vId        INTEGER NOT NULL
 );
