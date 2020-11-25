@@ -1,7 +1,5 @@
-const getPlaylist = require('./getPlaylist');
-const postNewPlaylist = require('./postNewPlaylist');
+const playlist = require('./playlist');
 
 module.exports = {
-  getPlaylist,
-  postNewPlaylist
+  playlist
 }
