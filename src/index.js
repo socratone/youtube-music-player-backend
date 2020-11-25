@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 const playlist = require('./getPlaylistVideo');
+
+app.use(cors());
  
 app.use('/api/playlist_video', playlist);
 
