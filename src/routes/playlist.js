@@ -89,8 +89,33 @@ router.post('/', (req, res) => {
   });
 });
 
-router.delete('/', (req, res) => {
-  res.status(200).send('delete 요청');
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  let db;
+  new Promise((resolve, reject) => { 
+    db = new sqlite3.Database('./db/database.sqlite3', error => {
+      if (error) reject(error);
+      resolve();
+    });
+  }).then(() => {
+    return new Promise((resolve, reject) => {
+      db.run('DELETE FROM playlist WHERE id=?', id, function (error) {
+        if (error) reject(error);
+        console.log(`${this.changes}줄의 row가 삭제 됐습니다.`);
+        resolve(this.changes)
+      });
+    }).catch(error => { 
+      throw error;
+    });
+  }).then(changes => {
+    db.close(error => {
+      if (error) throw error;
+      res.send(changes.toString());
+    });
+  }).catch(error => {
+    console.log('error:', error)
+    res.status(500).send(error.message);
+  });
 });
 
 module.exports = router;
