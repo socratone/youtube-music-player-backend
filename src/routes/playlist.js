@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
 
     // 재생리스트와 재생리스트에 들어 있는 곡 전부를 rows로 가져온다.
     const sql1 = `
-      SELECT playlist.id, playlist.title, video.videoId, video.title videoTitle 
+      SELECT playlist.id, playlist.title, video.videoId, video.title 
       FROM playlist_video
       INNER JOIN playlist ON playlist.id = playlist_video.pId
       INNER JOIN video ON video.id = playlist_video.vId
