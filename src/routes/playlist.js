@@ -14,8 +14,8 @@ router.get('/', async (req, res) => {
     const sql1 = `
       SELECT playlist.id, playlist.title, video.videoId, video.title 
       FROM playlist_video
-      INNER JOIN playlist ON playlist.id = playlist_video.pId
-      INNER JOIN video ON video.id = playlist_video.vId
+      JOIN playlist ON playlist.id = playlist_video.pId
+      JOIN video ON video.id = playlist_video.vId
       ORDER BY playlist.id`;
     const rows1 = await db.get(sql1, []);
     const results = groupVideosByListId(rows1);
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
     // playlist_video.pId에 없는 playlist.id rows를 찾는다. (= 비어 있는 재생리스트)
     const sql2 = `
       SELECT playlist.id, playlist.title FROM playlist
-      LEFT OUTER JOIN playlist_video ON playlist.id = playlist_video.pId
+      LEFT JOIN playlist_video ON playlist.id = playlist_video.pId
       WHERE playlist_video.pId IS NULL`;
     const rows2 = await db.get(sql2, []);
     await db.close();
