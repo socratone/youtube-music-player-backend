@@ -23,6 +23,17 @@ class Database {
     });
   }
 
+  get(sql, params) {
+    return new Promise((resolve, reject) => {
+      this.db.all(sql, params, (error, rows) => {
+        if (error) reject(error);
+        resolve(rows);
+      });
+    }).catch(error => {
+      throw error;
+    });
+  }
+
   close() {
     return new Promise((resolve, reject) => {
       this.db.close((error) => {
