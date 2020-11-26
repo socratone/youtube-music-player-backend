@@ -79,6 +79,7 @@ router.post('/', async (req, res) => {
     const sql = 'INSERT INTO playlist(title) VALUES(?)';
     const params = req.body.title.toString();
     const lastId = await db.run(sql, [params]);
+    db.close();
     res.status(200).send(lastId);
   } catch (error) {
     res.status(500).send(error);
