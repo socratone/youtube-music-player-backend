@@ -16,7 +16,7 @@ class Database {
     return new Promise((resolve, reject) => {
       this.db.run(sql, params, function (error) {
         if (error) reject(error);
-        resolve(this.lastID.toString());
+        resolve([this.changes, this.lastID]);
       });
     }).catch(error => {
       throw error;

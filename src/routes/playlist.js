@@ -8,7 +8,6 @@ const databasePath = './db/database.sqlite3';
 
 router.get('/', async (req, res) => {
   try {
-    console.log('get 진입')
     const db = new Database();
     await db.load(databasePath);
 
@@ -44,52 +43,32 @@ router.post('/', async (req, res) => {
     const db = new Database();
     await db.load(databasePath);
     const sql = 'INSERT INTO playlist(title) VALUES(?)';
-    const params = req.body.title.toString();
-    const lastId = await db.run(sql, [params]);
+    const listTitle = req.body.title.toString();
+    const [changes, lastId] = await db.run(sql, [listTitle]);
     await db.close();
-    res.status(200).send(lastId);
+    res.status(200).send(lastId.toString());
   } catch (error) {
     res.status(500).send(error);
   }
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  let db;
-  new Promise((resolve, reject) => { 
-    db = new sqlite3.Database('./db/database.sqlite3', error => {
-      if (error) reject(error);
-      resolve();
-    });
-  }).then(() => {
-    return new Promise((resolve, reject) => {
-      db.run('DELETE FROM playlist_video WHERE pId=?', id, function (error) {
-        if (error) reject(error);
-        console.log(`playlist_video에서 ${this.changes}줄의 row가 삭제 됐습니다.`);
-        resolve();
-      });
-    }).catch(error => { 
-      throw error;
-    });
-  }).then(() => {
-    return new Promise((resolve, reject) => {
-      db.run('DELETE FROM playlist WHERE id=?', id, function (error) {
-        if (error) reject(error);
-        console.log(`playlist에서 ${this.changes}줄의 row가 삭제 됐습니다.`);
-        resolve(this.changes)
-      });
-    }).catch(error => { 
-      throw error;
-    });
-  }).then(changes => {
-    db.close(error => {
-      if (error) throw error;
-      res.send(changes.toString());
-    });
-  }).catch(error => {
-    console.log('error:', error)
-    res.status(500).send(error.message);
-  });
+  try {
+    const db = new Database();
+    await db.load(databasePath);
+    const sql1 = 'DELETE FROM playlist_video WHERE pId=?';
+    const [changes1] = await db.run(sql1, id);
+    console.log(`playlist_video에서 ${changes1}줄의 row가 삭제 됐습니다.`);
+    
+    const sql2 = 'DELETE FROM playlist WHERE id=?';
+    const [changes2] = await db.run(sql2, id);
+    console.log(`playlist에서 ${changes2}줄의 row가 삭제 됐습니다.`);
+    await db.close();
+    res.send({ playlist_video: changes1, playlist: changes2 });
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 module.exports = router;
