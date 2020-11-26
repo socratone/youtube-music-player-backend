@@ -99,9 +99,19 @@ router.delete('/:id', (req, res) => {
     });
   }).then(() => {
     return new Promise((resolve, reject) => {
+      db.run('DELETE FROM playlist_video WHERE pId=?', id, function (error) {
+        if (error) reject(error);
+        console.log(`playlist_video에서 ${this.changes}줄의 row가 삭제 됐습니다.`);
+        resolve();
+      });
+    }).catch(error => { 
+      throw error;
+    });
+  }).then(() => {
+    return new Promise((resolve, reject) => {
       db.run('DELETE FROM playlist WHERE id=?', id, function (error) {
         if (error) reject(error);
-        console.log(`${this.changes}줄의 row가 삭제 됐습니다.`);
+        console.log(`playlist에서 ${this.changes}줄의 row가 삭제 됐습니다.`);
         resolve(this.changes)
       });
     }).catch(error => { 
