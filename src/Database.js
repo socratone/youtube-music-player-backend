@@ -24,7 +24,14 @@ class Database {
   }
 
   close() {
-    this.db.close();
+    return new Promise((resolve, reject) => {
+      this.db.close((error) => {
+        if (error) reject(error);
+        resolve();
+      });
+    }).catch(error => {
+      throw error;
+    });
   }
 }
 
