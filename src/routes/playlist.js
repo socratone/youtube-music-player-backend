@@ -51,6 +51,33 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.post('/:id', async (req, res) => {
+  const { videoId, title } = req.body;
+  try {
+    const db = new Database();
+    await db.load(databasePath);
+    const sql1 = 'SELECT id, videoId FROM video WHERE videoId = ?';
+    const rows1 = await db.get(sql1, [videoId]);
+
+    let id;
+    if (rows1[0] && rows1[0].videoId === videoId) {
+      id = rows1[0].id;
+    } else { 
+      // video가 없으면 추가한다.
+      const sql = 'INSERT INTO video (videoId, title) VALUES (?, ?)';
+      const [changes, lastId] = await db.run(sql, [videoId, title]);
+      id = lastId;
+    }
+
+    const sql2 = 'INSERT INTO playlist_video (pId, vId) VALUES (?, ?)';
+    const [changes] = await db.run(sql2, [req.params.id, id]);
+    await db.close();
+    res.status(200).send('ok');
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   try {
