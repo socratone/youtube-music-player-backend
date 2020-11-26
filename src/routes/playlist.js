@@ -52,6 +52,21 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const db = new Database();
+    await db.load(databasePath);
+    const listTitle = req.body.title.toString();
+    const sql = 'UPDATE playlist SET title = ? WHERE id = ?';
+    const [changes] = await db.run(sql, [listTitle, id]);
+    await db.close();
+    res.status(200).send({ playlist: changes });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
