@@ -46,7 +46,7 @@ router.post('/', async (req, res) => {
     const listTitle = req.body.title.toString();
     const [changes, lastId] = await db.run(sql, [listTitle]);
     await db.close();
-    res.status(200).send(lastId.toString());
+    res.status(200).send({ listId: lastId });
   } catch (error) {
     res.status(500).send(error);
   }
