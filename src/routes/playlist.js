@@ -112,4 +112,28 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+router.delete('/:id/videos', async (req, res) => {
+  const { id } = req.params;
+  const { videoIds } = req.body;
+  
+  try {
+    // videoIds에 해당하는 vId를 찾는다.
+    const sql2 = videoIds.map(videoId => `videoId = '${videoId}'`).join(' OR ');
+    const db = new Database();
+    await db.load(databasePath);
+    const sql1 = 'SELECT id FROM video WHERE ';
+    const rows1 = await db.get(sql1 + sql2, []);
+
+    // pId와 vId가 모두 있는 row를 삭제한다.
+    const sql4 = rows1.map(ids => `${ids.id}`).join(', ') + ')';
+    const sql3 = `DELETE FROM playlist_video WHERE pId = ? AND vId IN (`;
+    const [changes] = await db.run(sql3 + sql4, [id]);
+    console.log(`playlist_video에서 ${changes}줄의 row가 삭제 됐습니다.`);
+    await db.close();
+    res.send({ playlist_video: changes });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 module.exports = router;
