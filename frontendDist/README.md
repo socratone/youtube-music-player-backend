@@ -1,1 +1,0 @@
-이곳에 frontend에서 build한 bundle.js 파일이 위치해야 합니다.
