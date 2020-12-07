@@ -13,7 +13,7 @@ function createWindow () {
     height: 800,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, './src/index.js') // preload
+      preload: path.join(__dirname, './express/index.js') // preload
     }
   });
 
