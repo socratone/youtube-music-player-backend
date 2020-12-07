@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
 const Database = require('../Database');
 const groupVideosByListId = require('../helper/groupVideosByListId');
 
-const databasePath = './db/database.sqlite3';
+const databasePath = path.join(__dirname, '../../db/database.sqlite3');
 
 router.get('/', async (req, res) => {
   try {
