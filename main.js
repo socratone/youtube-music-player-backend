@@ -1,6 +1,10 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const { app, BrowserWindow, shell, ipcMain } = require('electron')
 const path = require('path')
+
+ipcMain.on('openYoutube', (event, arg) => {
+  shell.openExternal('https://www.youtube.com')
+});
 
 function createWindow () {
   // Create the browser window.
@@ -8,6 +12,7 @@ function createWindow () {
     width: 500,
     height: 800,
     webPreferences: {
+      nodeIntegration: true,
       preload: path.join(__dirname, './src/index.js') // preload
     }
   });
